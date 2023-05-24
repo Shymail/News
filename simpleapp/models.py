@@ -34,3 +34,22 @@ class Category(models.Model):
     def __str__(self):
         return self.name.title()
 # Create your models here.
+
+class NewsPortal(models.Model):
+    sort_date_of_publication = models.DateTimeField(auto_now_add=True)
+    article_title = models.CharField(max_length=50, unique=True)   # названия статьи не должны повторяться
+    article_description = models.TextField()   # Текст статьи
+
+    news_category = models.ForeignKey(to='NewsCategory', on_delete=models.CASCADE, related_name='news')   # все
+    # новости в категории будут доступны через поле news
+
+    def __str__(self):   # отображение описания товара на страничке в интернете
+        return f'{self.article_title.title()}: {self.article_description[:500]}'
+
+
+class NewsCategory(models.Model):
+    # названия категорий тоже не должны повторяться
+    article_title = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.article_title.title()
